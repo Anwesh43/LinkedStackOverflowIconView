@@ -233,4 +233,12 @@ class StackOverflowIconView(ctx : Context) : View(ctx) {
         }
     }
 
+    companion object {
+
+        fun create(activity : Activity) : StackOverflowIconView {
+            val view : StackOverflowIconView = StackOverflowIconView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
