@@ -186,4 +186,28 @@ class StackOverflowIconView(ctx : Context) : View(ctx) {
         }
     }
 
+    data class StackOverflowIcon(var i : Int, val state : State = State()) {
+
+        private val root : SOINode = SOINode(0)
+        private var curr : SOINode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            curr.update {
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
+
 }
