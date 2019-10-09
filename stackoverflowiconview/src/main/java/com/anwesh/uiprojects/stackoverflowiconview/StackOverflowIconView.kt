@@ -22,6 +22,7 @@ val lineColor : Int = Color.parseColor("#FF5722")
 val boxColor : Int = Color.parseColor("#212121")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val offsetFactor : Float = 5f
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -111,6 +112,34 @@ class StackOverflowIconView(ctx : Context) : View(ctx) {
             if (dir == 0f) {
                 dir = 1f - 2 * prevScale
                 cb()
+            }
+        }
+    }
+
+    data class Animator(var view : View, var animated : Boolean = false) {
+
+        fun animate(cb : () -> Unit) {
+            if (animated) {
+                cb()
+                try {
+                    Thread.sleep(delay)
+                    view.invalidate()
+                } catch(ex : Exception) {
+
+                }
+            }
+        }
+
+        fun start() {
+            if (!animated) {
+                animated = true
+                view.postInvalidate()
+            }
+        }
+
+        fun stop() {
+            if (animated) {
+                animated = false
             }
         }
     }
