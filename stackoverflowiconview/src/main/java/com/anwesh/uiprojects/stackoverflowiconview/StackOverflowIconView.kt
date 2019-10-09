@@ -210,4 +210,26 @@ class StackOverflowIconView(ctx : Context) : View(ctx) {
         }
     }
 
+    data class Renderer(var view : StackOverflowIconView) {
+
+        private val animator : Animator = Animator(view)
+        private var soi : StackOverflowIcon = StackOverflowIcon(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            soi.draw(canvas, paint)
+            animator.animate {
+                soi.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            soi.startUpdating {
+                animator.start()
+            }
+        }
+    }
+
 }
